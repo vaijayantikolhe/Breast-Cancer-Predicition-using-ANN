@@ -20,8 +20,10 @@ jobs:
         dotnet-version: '7.0.x'
 
     - name: Install Power BI CLI
-      run: |
-        dotnet tool install --global pbicli
+      run: |-
+      name: Install Power BI CLI
+            dotnet tool install -g MicrosoftPowerBIMgmt
+
 
     - name: Check PBICLI Version
       run: pbicli --version
