@@ -1,0 +1,40 @@
+name: Power BI CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '7.0.x'
+
+    - name: Install Power BI CLI
+      run: |
+        dotnet tool install --global Microsoft.PowerBI.CLI
+        echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+    - name: Check PBICLI Version
+      run: pbicli --version
+
+    - name: Login to Power BI
+      run: pbicli login --service-principal \
+            -t ${{ secrets.TENANT_ID }} \
+            -i ${{ secrets.CLIENT_ID }} \
+            -s ${{ secrets.CLIENT_SECRET }}
+
+    - name: Deploy Power BI Report
+      run: |
+        pbicli import pbix \
+        --workspace ${{ secrets.WORKSPACE_ID }} \
+        --file ./dashboard.pbix
