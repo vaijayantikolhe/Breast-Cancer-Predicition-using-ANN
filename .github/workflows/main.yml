@@ -21,8 +21,7 @@ jobs:
 
     - name: Install Power BI CLI
       run: |
-        dotnet tool install --global Microsoft.PowerBI.CLI
-        echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+        dotnet tool install --global pbicli
 
     - name: Check PBICLI Version
       run: pbicli --version
